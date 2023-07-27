@@ -1,0 +1,62 @@
+[package]
+name = "spider"
+version = "1.33.2"
+authors = ["madeindjs <contact@rousseau-alexandre.fr>", "j-mendez <jeff@a11ywatch.com>"]
+description = "The fastest web crawler written in Rust."
+repository = "https://github.com/spider-rs/spider"
+readme = "README.md"
+keywords = ["crawler", "spider"]
+categories = ["web-programming", "command-line-utilities"]
+license = "MIT"
+documentation = "https://docs.rs/spider"
+edition = "2018"
+
+[badges]
+maintenance = { status = "as-is" }
+
+[dependencies]
+reqwest = { version = "0.11.18", features = [ "brotli", "gzip", "native-tls-alpn", "stream" ] }
+url = "2.3.1"
+tokio = { version = "1.29.1", features = [ "rt-multi-thread", "macros", "time", "parking_lot" ] }
+tokio-stream = "0.1.14"
+hashbrown = { version = "0.14.0", default-features = true }
+log = "0.4.18"
+percent-encoding = "2.2.0"
+regex = { version = "1.9.1", optional = true }
+ua_generator = { git = "https://github.com/a11ywatch/ua_generator.git", version = "0.3.5", optional = true }
+string_concat = "0.0.1"
+lazy_static = "1.4.0"
+compact_str = "0.7.0"
+fast_html5ever = "0.26.1"
+selectors = "0.24.0"
+tendril = "0.4.3"
+ahash = "0.8.3"
+matches = "0.1.10"
+cssparser = "0.29.6"
+smallvec = "1.10.0"
+ego-tree = "0.6.2"
+num_cpus = "1.15.0"
+bytes = { version = "1.4.0", optional = true, features = [ "serde" ] }
+serde = { version = "1.0.167", optional = true, features = ["derive"] }
+flexbuffers = { version = "2.0.0", optional = true }
+itertools = { version = "0.10.5", optional = true }
+case_insensitive_string = { version = "0.1.6", features = [ "compact", "serde" ]}
+jsdom = { version = "0.0.11-alpha.1", optional = true, features = [ "hashbrown", "tokio" ] }
+
+[target.'cfg(all(not(windows), not(target_os = "android"), not(target_env = "musl")))'.dependencies]
+tikv-jemallocator = { version = "0.5.0", optional = true }
+
+[features]
+default = []
+regex = ["dep:regex"]
+glob = ["dep:regex", "dep:itertools"]
+ua_generator = ["dep:ua_generator"]
+jemalloc = ["tikv-jemallocator"]
+decentralized = ["serde", "flexbuffers"]
+control = []
+flexbuffers = ["dep:flexbuffers", "dep:bytes"]
+serde = ["dep:serde", "hashbrown/serde", "compact_str/serde"]
+fs = ["tokio/fs"]
+full_resources = []
+socks = ["reqwest/socks"]
+js = ["dep:jsdom"]
